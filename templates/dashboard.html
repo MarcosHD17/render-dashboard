@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block body %}
+<header class="bar">
+  <strong>Dashboard</strong>
+  <form method="post" action="{{ url_for('logout') }}">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <span>{{ session.username }}</span>
+    <button type="submit">Salir</button>
+  </form>
+</header>
+<main class="wrap">
+  <section class="stats">
+    <div class="card"><small>Productos</small><b>{{ stats.total }}</b></div>
+    <div class="card"><small>Unidades en stock</small><b>{{ stats.units }}</b></div>
+    <div class="card"><small>Valor inventario</small><b>{{ "%.2f"|format(stats.inventory_value) }} €</b></div>
+  </section>
+  <section class="card">
+    <table>
+      <thead><tr><th>ID</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th></tr></thead>
+      <tbody>
+      {% for p in products %}
+        <tr><td>{{ p.id }}</td><td>{{ p.name }}</td><td>{{ p.category }}</td>
+            <td>{{ "%.2f"|format(p.price) }} €</td><td>{{ p.stock }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}
